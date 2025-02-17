@@ -1,4 +1,4 @@
-package com.br.project.Controller;
+package com.br.project.adapter;
 
 import com.br.project.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
