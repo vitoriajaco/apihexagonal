@@ -1,11 +1,13 @@
 package com.br.project.adapter.controller;
 
-import com.br.project.Service.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.br.project.core.usecase.port.ProjectUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,24 +16,23 @@ import java.util.List;
 @RequestMapping (value="/v2/funcionalidades")
 public class ProjectController {
 
-    @Autowired
-    ProjectService projectService;
+   private final ProjectUseCase projectUseCase;
 
     List<String> sayHellos = Arrays.asList("Oi mundo", "Hello", "Bonjour", "le Monde!", "Ciao", "Mondo", "مرحبا بالعالم!");
 
-    @GetMapping("/all")
-    public List<String> todosValores(@RequestParam(required = false, value= "xpto") String filter) {
-
-        if (filter == null || filter.isEmpty()) {
-            return sayHellos;
-        }
-
-        return sayHellos.contains(filter) ? List.of(filter) : List.of();
+    public ProjectController(ProjectUseCase projectUseCase) {
+        this.projectUseCase = projectUseCase;
     }
 
-    @GetMapping
-    public String helloWorld(){
-        return projectService.helloWordService();
+    @GetMapping("/all")
+    public String todosValores(@RequestParam(required = false, value= "xpto") String filter) {
+
+        if (filter == null || filter.isEmpty()) {
+            return sayHellos.get(1);
+        }
+
+      /*  return sayHellos.contains(filter) ? List.of(filter) : List.of()*/;
+      return projectUseCase.process();
     }
 
 
